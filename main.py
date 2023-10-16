@@ -1,6 +1,7 @@
 from docx import Document
+import sys
 
-document = Document('data/sample.docx')
+document = Document(sys.argv[1])
 #breakpoint()
 for i,paragraph in enumerate(document.paragraphs):
     print(i,paragraph.text)
@@ -24,4 +25,4 @@ for i,paragraph in enumerate(document.paragraphs):
     # print(paragraph.style.font.highlight_color)
     # print(paragraph.style.font.size.pt)
 
-document.save("data/output.docx")
+document.save(sys.argv[2])
