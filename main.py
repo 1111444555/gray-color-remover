@@ -22,11 +22,15 @@ docx_filename="word/document.xml"
 root=get_xml_tree_from_document(docx_filename)
 
 
+p_counter=0
 
 for element in root.iter():
     #print(element.tag)
-    if "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p" in element.tag:
-
+    #if "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p" in element.tag:
+    if '</w:p' in etree.tostring(element).decode():
+        #breakpoint()
+        p_counter=p_counter+1
+        
 
 
         for e in element.iter():
@@ -60,8 +64,11 @@ for element in root.iter():
                         if check_if_color_gray_variation(color):
                             item.getparent().getparent().getparent().remove(item.getparent().getparent())
 
+print(p_counter)
 
 
-
-with open('temp/unzip/word/document.xm', 'wb') as f:
+with open('temp/unzip/word/document.xml', 'wb') as f:
     f.write(etree.tostring(root))
+
+os.system("cd /Users/saurabh/Documents/projects/smtv/docx_grey_remover/temp/unzip/Users/saurabh/Documents/projects/smtv/docx_grey_remover/temp/unzip")
+os.system("zip -r ../../word2.docx  *")

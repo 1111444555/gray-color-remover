@@ -24,7 +24,7 @@ def check_if_color_gray_variation(input_color):
 
         my_color = tuple(int(use_color.lstrip('#')[i:i+2], 16) for i in (0, 2, 4))
         get_distance = math.sqrt(sum([(a - b) ** 2 for a, b in zip(my_color, input_color)]))
-        print(get_distance)
+        #print(get_distance)
         if get_distance <30.0:
             return True
         
