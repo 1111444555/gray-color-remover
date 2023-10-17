@@ -8,6 +8,9 @@ see documentation of python-docx at https://github.com/python-openxml/python-doc
 
 ### This program takes in input docx as input and produces output docx as output
 
+# Status
+WIP
+
 # To run
 
 ```

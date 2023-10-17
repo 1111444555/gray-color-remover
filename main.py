@@ -1,28 +1,67 @@
-from docx import Document
+from utils import check_if_color_gray_variation
+from lxml import etree
+import zipfile
+import os
 import sys
 
-document = Document(sys.argv[1])
-#breakpoint()
-for i,paragraph in enumerate(document.paragraphs):
-    print(i,paragraph.text)
-    
-    # if i==7:
-    #     breakpoint()    
-    #breakpoint()
-    if len(paragraph.runs) > 0:
-        for run in paragraph.runs:
-            if  run.font.highlight_color != None:
-                #if paragraph.runs[0].font.highlight_color.value==16:
-                if 'GRAY_' in run.font.highlight_color.name:
-                    print("testing")
-                    paragraph.clear()
-                    break
-        # skip this
+# def get_word_xml(docx_filename):
+#    with open(docx_filename) as f:
+#       zip = zipfile.ZipFile(f)
+#       xml_content = zip.read('word/document.xml')
+#    return xml_content
 
 
-    
-    # print(paragraph.style.font.color.type)
-    # print(paragraph.style.font.highlight_color)
-    # print(paragraph.style.font.size.pt)
+def get_xml_tree(xml_string):
+   return etree.ElementTree(etree.fromstring(xml_string))
 
-document.save(sys.argv[2])
+def get_xml_tree_from_document(doc_xml_file_path):
+    return etree.parse(doc_xml_file_path).getroot()
+
+
+docx_filename="word/document.xml"
+root=get_xml_tree_from_document(docx_filename)
+
+
+
+for element in root.iter():
+    #print(element.tag)
+    if "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}p" in element.tag:
+
+
+
+        for e in element.iter():
+
+
+            if "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}rPr" in e.tag:
+
+                if "shd" in e:
+                    breakpoint()
+                for item in e.iter():
+
+                    if "shd" in item:
+                        breakpoint()
+
+
+                    if "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}shd" in item.tag:
+                        #print("testiin")
+                        color=item.attrib["{http://schemas.openxmlformats.org/wordprocessingml/2006/main}fill"]
+                        #print(color,item,item.getparent().getparent().getparent())
+                        print(color)
+
+                        if check_if_color_gray_variation(color):
+                            item.getparent().getparent().getparent().remove(item.getparent().getparent())
+
+
+                    if item.tag =="{http://schemas.openxmlformats.org/wordprocessingml/2006/main}highlight":
+                        color=item.attrib["{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val"]
+                        #print("11111")
+                        print(color)
+                        #print(color,item,item.getparent().getparent())
+                        if check_if_color_gray_variation(color):
+                            item.getparent().getparent().getparent().remove(item.getparent().getparent())
+
+
+
+
+with open('temp/unzip/word/document.xm', 'wb') as f:
+    f.write(etree.tostring(root))
