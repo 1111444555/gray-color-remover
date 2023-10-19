@@ -18,6 +18,7 @@ def check_if_color_gray_variation(input_color):
         if 'gray' in input_color.lower():
             return True
 
+    input_color="#" + input_color
     input_color = tuple(int(input_color.lstrip('#')[i:i+2], 16) for i in (0, 2, 4))
     for i in range (len(colors)):
         use_color = colors[i]

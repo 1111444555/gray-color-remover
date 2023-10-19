@@ -1,15 +1,13 @@
 # Gray color remover
 
 # Dependencies
-Python3
-python-docx
-
-see documentation of python-docx at https://github.com/python-openxml/python-docx
+lxml
 
 ### This program takes in input docx as input and produces output docx as output
 
 # Status
-WIP
+tested on sample.docx works fine
+but for some reason docx cannot be saved from temporary xml file in python (same command works in terminal)
 
 # To run
 
@@ -17,5 +15,17 @@ WIP
 input_docx=data/sample.docx
 output_docx=data/output.docx
 
-python3 main.py $input_docx $output_docx
+mkdir src_doc
+unzip $input_docx
+cp -r src_doc dst_doc
+
+python3 main.py src_doc/word/document.xml  dst_doc/word/document.xml
+
+cd dst_doc
+zip -r ../output.docx *
+
+
+
+
+
 ```
